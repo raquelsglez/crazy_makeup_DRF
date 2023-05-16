@@ -19,6 +19,7 @@ class MakeupProduct(TimestampedModel):
     class Meta:
         verbose_name = "MakeupProduct"
         verbose_name_plural = "MakeupProducts"
+        ordering = ["-created_at"]
 
     def __str__(self):
         return f"{self.name}"
