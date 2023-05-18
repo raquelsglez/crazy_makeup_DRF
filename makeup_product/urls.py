@@ -6,6 +6,6 @@ from .views import MakeupProductViewSet
 
 router = SimpleRouter()  # crea rutas
 
-router.register(r'MakeupProducts', MakeupProductViewSet, basename="MakeupProducts")
+router.register(r'makeup-products', MakeupProductViewSet, basename="makeup_products")
 
 urlpatterns = router.urls
