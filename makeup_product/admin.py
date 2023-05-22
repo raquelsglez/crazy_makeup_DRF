@@ -29,7 +29,11 @@ class PriceRangeFilter(admin.SimpleListFilter):
 
 
 @admin.register(MakeupProduct)
-class ShirtAdmin(admin.ModelAdmin):
-    list_display = ('name', 'color', 'trademark', 'price', 'created_at', 'updated_at')
+class MakeupProductAdmin(admin.ModelAdmin):
+
+    def get_queryset(self, request):
+        return self.model.all_objects.get_queryset()
+
+    list_display = ('name', 'color', 'trademark', 'price', 'created_at', 'updated_at', 'deleted_at', 'active')
     list_filter = ('color', 'stock', PriceRangeFilter)
     search_fields = ('name', 'trademark')
