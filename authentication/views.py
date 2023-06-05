@@ -16,6 +16,7 @@ class RegisterViewSet(mixins.CreateModelMixin, GenericViewSet):
     permission_classes = [AllowAny]
     serializer_class = RegistrationSerializer
 
+
 class UserViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
                   mixins.UpdateModelMixin, mixins.DestroyModelMixin, GenericViewSet):
     queryset = User.objects.all()

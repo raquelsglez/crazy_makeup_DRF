@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     "rest_framework",
     'rest_framework_simplejwt',
     'makeup_product',
-    'authentication'
+    'authentication',
+    'exercises'
 ]
 
 MIDDLEWARE = [

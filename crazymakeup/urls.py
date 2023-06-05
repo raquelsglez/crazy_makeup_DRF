@@ -26,4 +26,6 @@ urlpatterns = [
     url('api/', include('makeup_product.urls')),
     url('api/', include('authentication.urls')),
     url('api/', include('utils.urls')),
+    url('api/', include('exercises.urls')),
+
 ]
