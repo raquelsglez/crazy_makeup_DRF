@@ -32,18 +32,21 @@ class NeveraSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         nevera = Nevera(
-            anchura="5",
-            altura="2",
-            color="negro"
+            anchura=validated_data["anchura"],
+            altura=validated_data["altura"],
+            color=validated_data["color"],
+            nombre=validated_data["nombre"],
+            marca=validated_data["marca"]
         )
         nevera.save()
         return nevera
 
-    def update(self, instance, validated_data):  # PATCH
-
-        instance.altura = validated_data.get("altura")
-        instance.color = validated_data["color"]
-        instance.anchura = validated_data["anchura"]
-
-        instance.save(update_fields=["anchura", "altura"])
-        return instance
+    # def update(self, instance, validated_data):  # PATCH/PUT
+    #
+    #     instance.anchura = validated_data.get("anchura")
+    #     instance.color = validated_data.get("color", "negro")
+    #
+    #
+    #     instance.save(update_fields=["anchura", "color"])
+    #
+    #     return instance

@@ -22,6 +22,8 @@ class Nevera(BaseModel):
     anchura = models.DecimalField(max_digits=5, decimal_places=2)
     altura = models.DecimalField(max_digits=5, decimal_places=2)
     color = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=100)
+    marca = models.CharField(max_length=100)
 
     def __str__(self):
         return f"Nevera {self.color}"
