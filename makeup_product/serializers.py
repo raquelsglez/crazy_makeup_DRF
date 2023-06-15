@@ -11,6 +11,15 @@ class ListMakeupProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MakeupProduct
+        exclude = ["created_at", "updated_at", "deleted_at", "active"]
+
+
+class ListProfileMakeupProductSerializer(serializers.ModelSerializer):
+
+    color = serializers.ChoiceField(choices=ColorType.choices, source='get_color_display')
+
+    class Meta:
+        model = MakeupProduct
         fields = "__all__"
 
 
