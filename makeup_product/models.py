@@ -3,6 +3,7 @@ import uuid
 
 # Django and DRF imports
 from django.db import models
+from authentication.models import User
 
 # proof class imports
 from utils.models import BaseModel
@@ -29,6 +30,7 @@ class MakeupProduct(BaseModel):
     trademark = models.CharField(max_length=50)
     color = models.CharField(max_length=50, choices=ColorType.choices)
     price = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "MakeupProduct"
