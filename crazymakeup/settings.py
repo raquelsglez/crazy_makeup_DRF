@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'django_filters',
     'makeup_product',
     'authentication',
-    'exercises'
+    'exercises',
+    'exercises2'
 ]
 
 MIDDLEWARE = [
