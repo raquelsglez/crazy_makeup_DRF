@@ -1,8 +1,16 @@
 # Django and DRF imports
 from rest_framework import serializers
+from authentication.serializers import UserProfileSerializer
 
 # proof class imports
 from exercises2.models import Building, Flat, ColorType
+
+
+class BuildingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Building
+        fields = '__all__'
 
 
 class ListBuildingSerializer(serializers.ModelSerializer):
@@ -44,12 +52,17 @@ class UpdateBuildingSerializer(serializers.ModelSerializer):
 
 
 class FlatSerializer(serializers.ModelSerializer):
+
+    user = UserProfileSerializer()
+    building = BuildingSerializer()
+
     class Meta:
         model = Flat
         fields = "__all__"
 
 
 class UpdateFlatSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Flat
         fields = "__all__"

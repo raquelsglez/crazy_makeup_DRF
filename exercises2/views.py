@@ -68,8 +68,8 @@ class FlatViewSet(mixins.CreateModelMixin,
         "n_bathrooms": ["lt", "lte", "exact", "gte", "gt", "in"],
         "floor": ["lt", "lte", "exact", "gte", "gt", "in"],
         "letter": ["icontains", "exact", "in"],
-        "user": ["icontains", "exact", "in"],
-        "building": ["icontains", "exact", "in"],
+        "user": ["exact", "in"],
+        "building": ["exact", "in"],
         "building__street": ["icontains", "exact", "in"]
     }
 

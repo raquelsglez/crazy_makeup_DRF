@@ -1,5 +1,6 @@
 # Django and DRF imports
 from rest_framework import serializers
+from authentication.serializers import UserProfileSerializer
 
 # proof class imports
 from .models import MakeupProduct, ColorType
@@ -8,6 +9,7 @@ from .models import MakeupProduct, ColorType
 class ListMakeupProductSerializer(serializers.ModelSerializer):
 
     color = serializers.ChoiceField(choices=ColorType.choices, source='get_color_display')
+    user = UserProfileSerializer()
 
     class Meta:
         model = MakeupProduct
@@ -17,6 +19,7 @@ class ListMakeupProductSerializer(serializers.ModelSerializer):
 class ListProfileMakeupProductSerializer(serializers.ModelSerializer):
 
     color = serializers.ChoiceField(choices=ColorType.choices, source='get_color_display')
+    user = UserProfileSerializer()
 
     class Meta:
         model = MakeupProduct
