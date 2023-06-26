@@ -54,4 +54,4 @@ class Flat(BaseModel):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return f"Flat {self.floor} {self.letter} - Building {self.id}"
+        return f"Flat {self.floor} {self.letter} - {self.building}"

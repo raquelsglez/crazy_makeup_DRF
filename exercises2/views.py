@@ -1,5 +1,6 @@
 # Django and DRF imports
 import django_filters
+
 from rest_framework import mixins, status
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -18,15 +19,17 @@ from exercises2.serializers import (
 
 
 class BuildingViewSet(ModelViewSet):
+
     queryset = Building.objects.all()
     serializer_class = ListBuildingSerializer
     lookup_field = 'id'
+
     filter_backends = [SearchFilter, OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
 
     filterset_fields = {
         "n_floors": ["lt", "lte", "exact", "gte", "gt", "in"],
         "number": ["icontains", "exact", "in"],
-        "total_flats": ["icontains", "exact", "in"]
+        "total_flats": ["lt", "lte", "exact", "gte", "gt", "in"]
     }
 
     search_fields = ['street']
@@ -51,10 +54,12 @@ class FlatViewSet(mixins.CreateModelMixin,
                   mixins.ListModelMixin,
                   mixins.RetrieveModelMixin,
                   GenericViewSet):
+
     queryset = Flat.objects.all()
     serializer_class = FlatSerializer
     permission_classes = [AllowAny]
     lookup_field = 'id'
+
     filter_backends = [SearchFilter, OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
 
     filterset_fields = {
@@ -63,8 +68,8 @@ class FlatViewSet(mixins.CreateModelMixin,
         "n_bathrooms": ["lt", "lte", "exact", "gte", "gt", "in"],
         "floor": ["lt", "lte", "exact", "gte", "gt", "in"],
         "letter": ["icontains", "exact", "in"],
-        "user": [],
-        "building": [],
+        "user": ["icontains", "exact", "in"],
+        "building": ["icontains", "exact", "in"],
         "building__street": ["icontains", "exact", "in"]
     }
 
