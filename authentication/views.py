@@ -44,7 +44,7 @@ class UserViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewS
         "email": ["icontains", "exact", "in"],
         "dni": ["icontains","isnull", "exact", "in"],
         "phone": ["icontains", "isnull", "exact", "in"],
-        "adress": ["icontains", "isnull", "exact", "in"],
+        "address": ["icontains", "isnull", "exact", "in"],
         "is_staff": ["exact"]
 
     }

@@ -10,10 +10,18 @@ class ListMakeupProductSerializer(serializers.ModelSerializer):
 
     color = serializers.ChoiceField(choices=ColorType.choices, source='get_color_display')
     user = UserProfileSerializer()
+    is_favorite = serializers.SerializerMethodField()
+    favorites = serializers.SerializerMethodField()
 
     class Meta:
         model = MakeupProduct
         exclude = ["created_at", "updated_at", "deleted_at", "active"]
+
+    def get_is_favorite(self, obj):
+        return obj.is_favorite(self.context["request"].user)
+
+    def get_favorites(self, obj):
+        return obj.favorites()
 
 
 class ListProfileMakeupProductSerializer(serializers.ModelSerializer):

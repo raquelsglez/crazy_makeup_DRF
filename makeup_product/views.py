@@ -1,6 +1,8 @@
 # Django and DRF imports
 import django_filters
 from rest_framework import status, mixins
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.viewsets import GenericViewSet
@@ -33,6 +35,13 @@ class MakeupProductViewSet(mixins.CreateModelMixin,
     search_fields = ['name', 'color', 'trademark']
     ordering_fields = ['name', 'color', 'trademark', 'price']
 
+    def get_permissions(self):
+        if self.action == 'create':
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [AllowAny]
+        return [permission() for permission in permission_classes]
+
     def create(self, request, *args, **kwargs):
         request.data['user'] = request.user.id
         serializer = self.get_serializer(data=request.data)
@@ -45,6 +54,18 @@ class MakeupProductViewSet(mixins.CreateModelMixin,
         if self.action == "create":
             return CreateMakeupProductSerializer
         return self.serializer_class
+
+    @action(detail=True, methods=['POST'])
+    def favorite(self, request, id):
+        makeup_product = self.get_object()
+        self.request.user.do_favorite(makeup_product)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=True, methods=['POST'])
+    def unfavorite(self, request, id):
+        makeup_product = self.get_object()
+        self.request.user.do_unfavorite(makeup_product)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class MeMakeupProductView(mixins.UpdateModelMixin, mixins.DestroyModelMixin, mixins.ListModelMixin, GenericViewSet):
