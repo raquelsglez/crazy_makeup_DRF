@@ -40,6 +40,12 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
         related_name="favorites_by"
     )
 
+    comments = models.ManyToManyField(
+        "makeup_product.MakeupProduct",
+        related_name="comment_by",
+        through="Comment"
+    )
+
     USERNAME_FIELD = 'email'
 
     class Meta:
@@ -55,3 +61,12 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
 
     def do_unfavorite(self, makeup_product):
        self.favorites.remove(makeup_product)
+
+
+class Comment(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    MakeupProduct = models.ForeignKey('makeup_product.MakeupProduct', on_delete=models.CASCADE)
+    text = models.CharField(max_length=200)
+
+    class Meta:
+        unique_together = [['user', 'MakeupProduct', 'text']]

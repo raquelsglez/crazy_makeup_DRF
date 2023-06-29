@@ -6,12 +6,14 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import User
+from .models import User, Comment
 from .serializers import (
     RegistrationSerializer,
     UserSerializer,
     LoginSerializer,
-    UserProfileSerializer
+    UserProfileSerializer,
+    CommentSerializer,
+    UpdateCommentSerializer
 )
 from rest_framework.viewsets import mixins, GenericViewSet
 
@@ -42,7 +44,7 @@ class UserViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewS
         "first_name": ["icontains", "isnull", "exact", "in"],
         "last_name": ["icontains", "isnull", "exact", "in"],
         "email": ["icontains", "exact", "in"],
-        "dni": ["icontains","isnull", "exact", "in"],
+        "dni": ["icontains", "isnull", "exact", "in"],
         "phone": ["icontains", "isnull", "exact", "in"],
         "address": ["icontains", "isnull", "exact", "in"],
         "is_staff": ["exact"]
@@ -81,3 +83,36 @@ class UserViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewS
         return self.serializer_class
 
 
+class CommentViewSet(
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    mixins.UpdateModelMixin,
+    GenericViewSet
+):
+
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    filter_backends = [SearchFilter, OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
+
+    filterset_fields = {
+        'user': ["isnull", "exact", "in"],
+        'MakeupProduct': ["isnull", "exact", "in"]
+
+    }
+    search_fields = ['user', 'makeup_product']
+    ordering_fields = "__all__"
+
+    def create(self, request, *args, **kwargs):
+        request.data['user'] = request.user.id
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def get_serializer_class(self):
+        if self.action in ("update", "partial_update"):
+            return UpdateCommentSerializer
+        return self.serializer_class

@@ -36,7 +36,7 @@ class MakeupProductViewSet(mixins.CreateModelMixin,
     ordering_fields = ['name', 'color', 'trademark', 'price']
 
     def get_permissions(self):
-        if self.action == 'create':
+        if self.action in ('create', 'favorite', 'unfavorite'):
             permission_classes = [IsAuthenticated]
         else:
             permission_classes = [AllowAny]
