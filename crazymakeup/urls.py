@@ -27,6 +27,7 @@ urlpatterns = [
     url('api/', include('authentication.urls')),
     url('api/', include('utils.urls')),
     url('api/', include('exercises.urls')),
-    url('api/', include('exercises2.urls'))
+    url('api/', include('exercises2.urls')),
+    url('api/', include('activities.urls'))
 
 ]

@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'makeup_product',
     'authentication',
     'exercises',
-    'exercises2'
+    'exercises2',
+    'activities'
 ]
 
 MIDDLEWARE = [
