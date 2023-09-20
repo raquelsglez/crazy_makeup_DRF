@@ -2,10 +2,10 @@
 import django_filters
 from rest_framework import mixins
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 # proof class imports
+from activities.permissions import IsUserDni, IsUserIsStaff, IsUserPhone
 from activities.models import CarWorkshop, Worker, Car, Arrangement
 from activities.serializers import (CarWorkshopSerializer,
                                     WorkerSerializer,
@@ -19,6 +19,13 @@ class CarWorkshopViewSet(ModelViewSet):
     queryset = CarWorkshop.objects.all()
     serializer_class = CarWorkshopSerializer
     lookup_field = 'id'
+
+    def get_permissions(self):
+        if self.action == 'create':
+            permission_classes = [IsUserDni, IsUserIsStaff]
+        else:
+            permission_classes = self.permission_classes
+        return [permission() for permission in permission_classes]
 
     filter_backends = [SearchFilter, OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
 
@@ -46,6 +53,13 @@ class WorkerViewSet(mixins.CreateModelMixin,
     queryset = Worker.objects.all()
     serializer_class = WorkerSerializer
     lookup_field = 'name'
+
+    def get_permissions(self):
+        if self.action == 'create':
+            permission_classes = [IsUserIsStaff]
+        else:
+            permission_classes = self.permission_classes
+        return [permission() for permission in permission_classes]
 
     filter_backends = [SearchFilter, OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
 
@@ -75,6 +89,13 @@ class CarViewSet(mixins.CreateModelMixin,
     serializer_class = CarSerializer
     lookup_field = 'car_license_plate'
 
+    def get_permissions(self):
+        if self.action == 'create':
+            permission_classes = [IsUserDni]
+        else:
+            permission_classes = self.permission_classes
+        return [permission() for permission in permission_classes]
+
     filter_backends = [SearchFilter, OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
 
     filterset_fields = {
@@ -96,6 +117,13 @@ class ArrangementViewSet(mixins.CreateModelMixin,
     queryset = Arrangement.objects.all()
     serializer_class = ArrangementSerializer
     lookup_field = 'id'
+
+    def get_permissions(self):
+        if self.action == 'create':
+            permission_classes = [IsUserDni, IsUserPhone]
+        else:
+            permission_classes = self.permission_classes
+        return [permission() for permission in permission_classes]
 
     filter_backends = [SearchFilter, OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
 
